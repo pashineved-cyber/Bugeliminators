@@ -1,0 +1,69 @@
+version: "2.0"
+
+services:
+  frontend:
+    image: ninja35sahu/ai-summarizer-frontend:1.0
+    expose:
+      - port: 80
+        as: 80
+        to:
+          - global: true
+
+  backend:
+    image: ninja35sahu/ai-summarizer-backend:1.0
+    expose:
+      - port: 8000
+        as: 8000
+        to:
+          - global: true
+    env:
+      - MODEL_NAME=facebook/bart-large-cnn
+    params:
+      storage:
+        data:
+          mount: /app/data
+
+profiles:
+  compute:
+    frontend:
+      resources:
+        cpu:
+          units: 0.5
+        memory:
+          size: 512Mi
+        storage:
+          size: 1Gi
+    backend:
+      resources:
+        cpu:
+          units: 2
+        memory:
+          size: 4Gi
+        gpu:
+          units: 1
+          attributes:
+            vendor:
+              nvidia:
+                - model: t4
+        storage:
+          size: 10Gi
+
+  placement:
+    global:
+      pricing:
+        frontend:
+          denom: uakt
+          amount: 5
+        backend:
+          denom: uakt
+          amount: 50
+
+deployment:
+  frontend:
+    global:
+      profile: frontend
+      count: 1
+  backend:
+    global:
+      profile: backend
+      count: 1
