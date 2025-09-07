@@ -17,7 +17,7 @@ Users can upload documents (PDF/TXT) and get summaries as well as perform semant
 ## Akash network
   - Akash is a decentralized cloud computing marketplace
   - instead of relying on traditional cloudcomputing services akash connects users who are in need of computing power to providers who have spare capacity
-  - Rather than allowing the providers freedom to price thier compute akash allows all the providers to present a bid, thus lowering proces by interoducing competion
+  - Rather than allowing the providers freedom to price their compute akash allows all the providers to present a bid, thus lowering proces by interoducing competion
   - It runs on blockchain principles and is open, permissionless, and censorship-
   - learn more about akash network on https://akash.network/docs/
 
