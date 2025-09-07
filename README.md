@@ -32,7 +32,7 @@ Users can upload documents (PDF/TXT) and get summaries as well as perform semant
   - upload → PDF/TXT document
   - summarize → Summarize with HuggingFace model
   - search → Embedding-based semantic search
-  - Postgres for metadata + embeddings
+    
   ### AI Engine
   - **Summarization:** Meta-Llama-3-1-8B-Instruct-FP8
   - **Embeddings:** sentence-transformers/all-MiniLM-L6-v2
