@@ -1,69 +1,87 @@
 version: "2.0"
 
 services:
-  frontend:
-    image: ninja35sahu/ai-summarizer-frontend:1.0
-    expose:
-      - port: 80
-        as: 80
-        to:
-          - global: true
-
   backend:
-    image: ninja35sahu/ai-summarizer-backend:1.0
+    image: ninja35sahu/ai-backend:latest
+    env:
+      - MODEL_NAME=Meta-Llama-3-1-8B-Instruct-FP8
     expose:
       - port: 8000
-        as: 8000
+        as: 80
+        to:
+          - global: true   # expose FastAPI to internet
+      - port: 8001
+        as: 8001
+        to:
+          - global: false  # internal use (only backend calls)
+    resources:
+      cpu:
+        units: 4
+      memory:
+        size: 32Gi
+      gpu:
+        units: 1
+        attributes:
+          vendor:
+            nvidia:
+      storage:
+        - size: 50Gi
+
+  frontend:
+    image: ankit040706/frontend:latest
+    expose:
+      - port: 80
+        as: 3000
         to:
           - global: true
-    env:
-      - MODEL_NAME=facebook/bart-large-cnn
-    params:
+    resources:
+      cpu:
+        units: 1
+      memory:
+        size: 1Gi
       storage:
-        data:
-          mount: /app/data
+        - size: 1Gi
 
 profiles:
   compute:
-    frontend:
-      resources:
-        cpu:
-          units: 0.5
-        memory:
-          size: 512Mi
-        storage:
-          size: 1Gi
     backend:
       resources:
         cpu:
-          units: 2
+          units: 4
         memory:
-          size: 4Gi
+          size: 32Gi
         gpu:
           units: 1
           attributes:
             vendor:
               nvidia:
-                - model: t4
         storage:
-          size: 10Gi
+          - size: 50Gi
+    frontend:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          - size: 1Gi
 
   placement:
-    global:
+    dcloud:
       pricing:
-        frontend:
-          denom: uakt
-          amount: 5
         backend:
           denom: uakt
-          amount: 50
+          amount: 1000
+        frontend:
+          denom: uakt
+          amount: 100
 
 deployment:
-  frontend:
-    global:
-      profile: frontend
-      count: 1
   backend:
-    global:
+    dcloud:
       profile: backend
+      count: 1
+  frontend:
+    dcloud:
+      profile: frontend
       count: 1
