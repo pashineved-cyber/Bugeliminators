@@ -1,0 +1,14 @@
+.env
+.venv
+venv
+pycache
+*.pyc
+*.pyo
+.DS_Store
+.vscode
+.idea
+.pytest_cache
+pip-log.txt
+pip-log.json
+/test-reports/
+/logs/

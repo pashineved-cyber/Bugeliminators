@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    container_name: ai-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - ai-net
+
+  frontend:
+    build: ./frontend
+    container_name: ai-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - ai-net
+
+networks:
+  ai-net:
+    driver: bridge
